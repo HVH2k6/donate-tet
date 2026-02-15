@@ -1,5 +1,6 @@
 const { PayOS } = require('@payos/node');
 const Donor = require('../models/Donor');
+require('dotenv').config();
 
 const payos = new PayOS({
     clientId: process.env.PAYOS_CLIENT_ID,
