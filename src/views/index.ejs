@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lì Xì Tết 2026 - Vạn Sự Như Ý</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root { --tet-red: #D32F2F; --tet-gold: #FFD700; --bg-cream: #FFF8E1; }
+        body { font-family: 'Quicksand', sans-serif; background-color: var(--bg-cream); }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #b71c1c 0%, #D32F2F 100%);
+            background-blend-mode: overlay;
+            color: var(--tet-gold); padding: 50px 0 80px 0;
+            border-bottom-left-radius: 40% 10%; border-bottom-right-radius: 40% 10%;
+            text-align: center; margin-bottom: -60px;
+        }
+        .hero-title { font-family: 'Coiny', system-ui; text-shadow: 2px 2px 0 #8b0000; }
+        
+        .main-card {
+            background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 30px; position: relative; z-index: 10; border: 2px solid #FFECB3;
+        }
+        
+        .btn-lixi {
+            background: linear-gradient(to right, #FFD700, #FFC107); border: none;
+            color: #b71c1c; font-weight: bold; font-family: 'Coiny';
+            padding: 12px; border-radius: 50px; width: 100%; font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4); transition: 0.3s;
+        }
+        .btn-lixi:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6); }
+
+        /* Table */
+        .table-custom thead { background-color: #b71c1c; color: white; }
+        .rank-1 { color: #FFD700; font-size: 1.5rem; }
+        .rank-2 { color: #C0C0C0; font-size: 1.3rem; }
+        .rank-3 { color: #CD7F32; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <audio id="audio-success" src="/sounds/tet-music.mp3" preload="auto"></audio>
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="hero-title display-4">Tết Nguyên Đán 2026</h1>
+            <p class="lead text-white">Lì xì đầu năm - Cả năm may mắn</p>
+        </div>
+    </div>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            
+            <div class="col-lg-5 mb-4">
+                <div class="main-card">
+                    
+                    <div id="donate-area">
+                        <h3 class="text-center text-danger font-tet mb-4" style="font-family: 'Coiny'">🧧 Gửi Lì Xì</h3>
+                        <form id="form-donate">
+                            <div class="mb-3">
+                                <label class="fw-bold">Tên của bạn:</label>
+                                <input type="text" class="form-control rounded-pill" name="name" placeholder="Ví dụ: Anh Hai" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="fw-bold">Số tiền (VNĐ):</label>
+                                <input type="number" class="form-control rounded-pill" name="amount" placeholder="Nhập số tiền..." min="2000" required>
+                                <div class="form-text text-danger fst-italic">*Donate trên 100k có hiệu ứng đặc biệt!</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="fw-bold">Lời chúc:</label>
+                                <textarea class="form-control rounded-3" name="message" rows="2" placeholder="Chúc mừng năm mới..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-lixi">
+                                <i class="bi bi-qr-code"></i> Tạo Mã QR
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="qr-area" class="text-center d-none">
+                        <h4 class="text-success mb-3" style="font-family: 'Coiny'">Quét mã để lì xì</h4>
+                        <div class="p-2 border border-2 border-warning rounded d-inline-block mb-3 bg-white">
+                            <img id="vietqr-img" src="" alt="QR Code" class="img-fluid" style="max-width: 250px;">
+                        </div>
+                        <div class="alert alert-warning py-2 small">
+                            Số tiền: <strong id="transfer-amount" class="text-danger fs-5"></strong> <br>
+                            Nội dung: <strong id="transfer-content"></strong>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center text-muted gap-2">
+                            <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
+                            <span>Đang chờ thanh toán...</span>
+                        </div>
+                        <button onclick="window.location.reload()" class="btn btn-sm btn-outline-secondary mt-3">Hủy bỏ</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="main-card">
+                    <h3 class="text-center text-danger mb-4" style="font-family: 'Coiny'">🏆 Bảng Vàng Phú Quý</h3>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-custom align-middle">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Người Gửi</th>
+                                    <th class="text-end">Số Tiền</th>
+                                    <th>Lời Chúc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (topDonors.length === 0) { %>
+                                    <tr><td colspan="4" class="text-center py-3 text-muted">Chưa có ai mở hàng. Bạn hãy là người đầu tiên!</td></tr>
+                                <% } else { %>
+                                    <% topDonors.forEach(function(donor, index) { %>
+                                        <tr>
+                                            <td class="text-center fw-bold">
+                                                <% if(index == 0) { %> <i class="bi bi-trophy-fill rank-1"></i>
+                                                <% } else if(index == 1) { %> <i class="bi bi-trophy-fill rank-2"></i>
+                                                <% } else if(index == 2) { %> <i class="bi bi-trophy-fill rank-3"></i>
+                                                <% } else { %> <%= index + 1 %> <% } %>
+                                            </td>
+                                            <td class="fw-bold text-primary"><%= donor.name %></td>
+                                            <td class="text-end text-danger fw-bold">
+                                                <%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(donor.amount) %>
+                                            </td>
+                                            <td class="small text-muted fst-italic text-truncate" style="max-width: 150px;">
+                                                <%= donor.message %>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const formDonate = document.getElementById('form-donate');
+        const donateArea = document.getElementById('donate-area');
+        const qrArea = document.getElementById('qr-area');
+        const qrImg = document.getElementById('vietqr-img');
+        
+        let checkInterval;
+        let currentAmount = 0; // Lưu số tiền để check logic 100k
+        let currentName = "";
+
+        formDonate.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = formDonate.querySelector('button');
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = 'Đang tạo mã...'; btn.disabled = true;
+
+            const formData = new FormData(formDonate);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Lưu lại giá trị
+            currentAmount = parseInt(data.amount);
+            currentName = data.name;
+
+            try {
+                // 1. Gọi API tạo Payment Link
+                const res = await fetch('/create-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+
+                if (result.error !== 0) {
+                    Swal.fire('Lỗi', result.message, 'error');
+                    btn.innerHTML = originalBtnText; btn.disabled = false;
+                    return;
+                }
+
+                // 2. Hiển thị QR (Dùng VietQR QuickLink cho nhanh)
+                const pd = result.data;
+                const qrUrl = `https://img.vietqr.io/image/${pd.bin}-${pd.accountNumber}-compact.jpg?amount=${pd.amount}&addInfo=${encodeURIComponent(pd.description)}&accountName=${encodeURIComponent(pd.accountName)}`;
+                
+                qrImg.src = qrUrl;
+                document.getElementById('transfer-amount').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(pd.amount);
+                document.getElementById('transfer-content').innerText = pd.description;
+
+                donateArea.classList.add('d-none');
+                qrArea.classList.remove('d-none');
+
+                // 3. Bắt đầu check trạng thái
+                startPolling(pd.orderCode);
+
+            } catch (err) {
+                console.error(err);
+                Swal.fire('Lỗi', 'Không thể kết nối server', 'error');
+                btn.innerHTML = originalBtnText; btn.disabled = false;
+            }
+        });
+
+        function startPolling(orderCode) {
+            checkInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`/check-status?orderCode=${orderCode}`);
+                    const data = await res.json();
+
+                    if (data.status === 'PAID') {
+                        clearInterval(checkInterval);
+                        handleSuccessPayment();
+                    }
+                } catch (e) { console.log("Waiting..."); }
+            }, 2000); // Check mỗi 2 giây
+        }
+
+        // --- HÀM XỬ LÝ KHI THANH TOÁN THÀNH CÔNG ---
+        function handleSuccessPayment() {
+            qrArea.classList.add('d-none');
+
+            // 1. Phát nhạc
+            const audio = document.getElementById('audio-success');
+            audio.play().catch(e => console.log("Audio autoplay blocked"));
+
+            // 2. Bắn pháo hoa rực rỡ
+            runFireworks();
+
+            // 3. Logic thông báo (>= 100k thì cảm ơn Bố/Mẹ)
+            let title = "Cảm ơn Đại Gia!";
+            let htmlContent = `Cảm ơn <b>${currentName}</b> đã lì xì! <br> Chúc bạn năm mới vạn sự như ý.`;
+            let icon = "success";
+            let backdrop = `rgba(0,0,123,0.4)`;
+
+            if (currentAmount >= 100000) {
+                title = "🎉 CON CẢM ƠN BỐ/MẸ! ❤️";
+                htmlContent = `
+                    <div style="font-size: 1.2rem;">
+                        Bố/Mẹ <b>${currentName}</b> đã lì xì con 
+                        <b style="color:red; font-size: 1.5rem;">${new Intl.NumberFormat('vi-VN').format(currentAmount)}đ</b>
+                        <br>Con chúc Bố/Mẹ năm mới mạnh khỏe, sống lâu trăm tuổi!
+                    </div>
+                `;
+                // Backdrop có gif mèo thần tài hoặc pháo hoa
+                backdrop = `
+                    rgba(0,0,0,0.8)
+                    url("https://media.giphy.com/media/26tOZ42Mg6pbTUPvy/giphy.gif")
+                    left top
+                    no-repeat
+                `;
+            }
+
+            // 4. Hiện Popup SweetAlert
+            Swal.fire({
+                title: title,
+                html: htmlContent,
+                icon: icon,
+                width: 600,
+                padding: '3em',
+                color: '#716add',
+                background: '#fff url(https://sweetalert2.github.io/images/trees.png)', // Background hoa lá
+                backdrop: backdrop,
+                confirmButtonText: 'Tuyệt vời!',
+                allowOutsideClick: false
+            }).then(() => {
+                window.location.reload(); // Reload để cập nhật bảng xếp hạng
+            });
+        }
+
+        // --- CODE BẮN PHÁO HOA ---
+        function runFireworks() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 99999 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
