@@ -185,7 +185,7 @@
 
                 // 2. Hiển thị QR (Dùng VietQR QuickLink cho nhanh)
                 const pd = result.data;
-                const qrUrl = `https://img.vietqr.io/image/${pd.bin}-${pd.accountNumber}-compact.jpg?amount=${pd.amount}&addInfo=${encodeURIComponent(pd.description)}&accountName=${encodeURIComponent(pd.accountName)}`;
+                const qrUrl = `https://img.vietqr.io/image/${pd.bin}-${pd.accountNumber}-payos.jpg?amount=${pd.amount}&addInfo=${encodeURIComponent(pd.description)}&accountName=${encodeURIComponent(pd.accountName)}`;
                 
                 qrImg.src = qrUrl;
                 document.getElementById('transfer-amount').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(pd.amount);
